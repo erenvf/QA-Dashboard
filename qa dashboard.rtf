@@ -1,0 +1,1358 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+\
+<html lang="tr">\
+<head>\
+<meta charset="UTF-8">\
+<meta name="viewport" content="width=device-width, initial-scale=1.0">\
+<title>QA Command Center</title>\
+<style>\
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');\
+\
+:root \{\
+\'96bg: #0a0a0f;\
+\'96surface: #12121a;\
+\'96surface2: #1a1a26;\
+\'96border: #2a2a3d;\
+\'96accent: #00e5ff;\
+\'96accent2: #ff3d71;\
+\'96accent3: #b388ff;\
+\'96warn: #ffb300;\
+\'96ok: #00e676;\
+\'96text: #e8e8f0;\
+\'96muted: #6b6b8a;\
+\'96font-head: \'91Syne\'92, sans-serif;\
+\'96font-mono: \'91Space Mono\'92, monospace;\
+\}\
+\
+\'95\uc0\u8288   \u8288 \{ margin: 0; padding: 0; box-sizing: border-box; \}\
+\
+body \{\
+background: var(\'96bg);\
+color: var(\'96text);\
+font-family: var(\'96font-head);\
+min-height: 100vh;\
+overflow-x: hidden;\
+\}\
+\
+/* HEADER */\
+.header \{\
+display: flex;\
+align-items: center;\
+justify-content: space-between;\
+padding: 18px 32px;\
+border-bottom: 1px solid var(\'96border);\
+background: var(\'96surface);\
+position: sticky;\
+top: 0;\
+z-index: 100;\
+\}\
+.logo \{\
+font-size: 1.1rem;\
+font-weight: 800;\
+letter-spacing: 3px;\
+text-transform: uppercase;\
+color: var(\'96accent);\
+\}\
+.logo span \{ color: var(\'96text); \}\
+.header-meta \{\
+font-family: var(\'96font-mono);\
+font-size: 0.7rem;\
+color: var(\'96muted);\
+text-align: right;\
+\}\
+.header-meta strong \{ color: var(\'96accent); display: block; \}\
+\
+/* TABS */\
+.tabs \{\
+display: flex;\
+gap: 0;\
+border-bottom: 1px solid var(\'96border);\
+background: var(\'96surface);\
+padding: 0 32px;\
+\}\
+.tab \{\
+padding: 14px 24px;\
+font-size: 0.78rem;\
+font-weight: 700;\
+letter-spacing: 2px;\
+text-transform: uppercase;\
+cursor: pointer;\
+color: var(\'96muted);\
+border-bottom: 2px solid transparent;\
+transition: all 0.2s;\
+font-family: var(\'96font-head);\
+background: none;\
+border-top: none;\
+border-left: none;\
+border-right: none;\
+\}\
+.tab:hover \{ color: var(\'96text); \}\
+.tab.active \{ color: var(\'96accent); border-bottom-color: var(\'96accent); \}\
+\
+/* MAIN LAYOUT */\
+.main \{ padding: 28px 32px; \}\
+\
+/* STATS BAR */\
+.stats-bar \{\
+display: grid;\
+grid-template-columns: repeat(5, 1fr);\
+gap: 12px;\
+margin-bottom: 28px;\
+\}\
+.stat-card \{\
+background: var(\'96surface);\
+border: 1px solid var(\'96border);\
+padding: 16px 20px;\
+border-radius: 8px;\
+\}\
+.stat-label \{\
+font-size: 0.65rem;\
+font-weight: 700;\
+letter-spacing: 2px;\
+text-transform: uppercase;\
+color: var(\'96muted);\
+margin-bottom: 8px;\
+font-family: var(\'96font-mono);\
+\}\
+.stat-val \{\
+font-size: 2rem;\
+font-weight: 800;\
+line-height: 1;\
+\}\
+.stat-val.accent \{ color: var(\'96accent); \}\
+.stat-val.warn \{ color: var(\'96warn); \}\
+.stat-val.danger \{ color: var(\'96accent2); \}\
+.stat-val.ok \{ color: var(\'96ok); \}\
+\
+/* SECTION VIEWS */\
+.view \{ display: none; \}\
+.view.active \{ display: block; \}\
+\
+/* ===== G\'d6REVLER VIEW ===== */\
+.section-header \{\
+display: flex;\
+align-items: center;\
+justify-content: space-between;\
+margin-bottom: 16px;\
+\}\
+.section-title \{\
+font-size: 0.75rem;\
+font-weight: 700;\
+letter-spacing: 3px;\
+text-transform: uppercase;\
+color: var(\'96muted);\
+font-family: var(\'96font-mono);\
+\}\
+.btn \{\
+background: var(\'96accent);\
+color: #000;\
+border: none;\
+padding: 9px 20px;\
+border-radius: 4px;\
+font-family: var(\'96font-head);\
+font-weight: 700;\
+font-size: 0.75rem;\
+letter-spacing: 1px;\
+cursor: pointer;\
+transition: opacity 0.2s;\
+\}\
+.btn:hover \{ opacity: 0.85; \}\
+.btn.secondary \{\
+background: transparent;\
+color: var(\'96accent);\
+border: 1px solid var(\'96accent);\
+\}\
+.btn.danger-btn \{\
+background: var(\'96accent2);\
+color: #fff;\
+\}\
+\
+/* FILTERS */\
+.filters \{\
+display: flex;\
+gap: 10px;\
+margin-bottom: 20px;\
+flex-wrap: wrap;\
+\}\
+.filter-select, .filter-input \{\
+background: var(\'96surface);\
+border: 1px solid var(\'96border);\
+color: var(\'96text);\
+padding: 8px 14px;\
+border-radius: 4px;\
+font-family: var(\'96font-head);\
+font-size: 0.8rem;\
+cursor: pointer;\
+\}\
+.filter-input \{ min-width: 200px; \}\
+\
+/* TASK TABLE */\
+.task-table \{\
+width: 100%;\
+border-collapse: collapse;\
+\}\
+.task-table th \{\
+text-align: left;\
+font-size: 0.65rem;\
+letter-spacing: 2px;\
+text-transform: uppercase;\
+color: var(\'96muted);\
+font-family: var(\'96font-mono);\
+padding: 10px 14px;\
+border-bottom: 1px solid var(\'96border);\
+cursor: pointer;\
+user-select: none;\
+\}\
+.task-table th:hover \{ color: var(\'96accent); \}\
+.task-table td \{\
+padding: 12px 14px;\
+border-bottom: 1px solid #1e1e2e;\
+font-size: 0.82rem;\
+vertical-align: middle;\
+\}\
+.task-table tr:hover td \{ background: var(\'96surface); \}\
+.task-table tr.overdue td \{ border-left: 3px solid var(\'96accent2); \}\
+.task-table tr.due-today td \{ border-left: 3px solid var(\'96warn); \}\
+.task-table tr.due-soon td \{ border-left: 3px solid var(\'96accent3); \}\
+\
+.priority-badge \{\
+display: inline-block;\
+padding: 2px 8px;\
+border-radius: 3px;\
+font-size: 0.65rem;\
+font-weight: 700;\
+letter-spacing: 1px;\
+text-transform: uppercase;\
+font-family: var(\'96font-mono);\
+\}\
+.p-critical \{ background: rgba(255,61,113,0.2); color: var(\'96accent2); \}\
+.p-high \{ background: rgba(255,179,0,0.2); color: var(\'96warn); \}\
+.p-medium \{ background: rgba(179,136,255,0.2); color: var(\'96accent3); \}\
+.p-low \{ background: rgba(0,229,255,0.15); color: var(\'96accent); \}\
+\
+.status-badge \{\
+display: inline-block;\
+padding: 2px 8px;\
+border-radius: 20px;\
+font-size: 0.65rem;\
+font-weight: 700;\
+letter-spacing: 1px;\
+text-transform: uppercase;\
+font-family: var(\'96font-mono);\
+\}\
+.s-open \{ background: rgba(0,230,118,0.12); color: var(\'96ok); \}\
+.s-progress \{ background: rgba(0,229,255,0.12); color: var(\'96accent); \}\
+.s-review \{ background: rgba(179,136,255,0.15); color: var(\'96accent3); \}\
+.s-done \{ background: rgba(100,100,120,0.2); color: var(\'96muted); \}\
+.s-overdue \{ background: rgba(255,61,113,0.15); color: var(\'96accent2); \}\
+\
+.deadline-text \{\
+font-family: var(\'96font-mono);\
+font-size: 0.72rem;\
+\}\
+.deadline-text.overdue \{ color: var(\'96accent2); \}\
+.deadline-text.today \{ color: var(\'96warn); \}\
+.deadline-text.soon \{ color: var(\'96accent3); \}\
+.deadline-text.ok \{ color: var(\'96muted); \}\
+\
+.action-btns \{ display: flex; gap: 6px; \}\
+.icon-btn \{\
+background: var(\'96surface2);\
+border: 1px solid var(\'96border);\
+color: var(\'96muted);\
+padding: 4px 8px;\
+border-radius: 3px;\
+cursor: pointer;\
+font-size: 0.75rem;\
+transition: all 0.15s;\
+\}\
+.icon-btn:hover \{ color: var(\'96accent); border-color: var(\'96accent); \}\
+\
+/* LEADER COLUMN */\
+.leader-tag \{\
+display: inline-flex;\
+align-items: center;\
+gap: 6px;\
+font-size: 0.75rem;\
+\}\
+.leader-dot \{\
+width: 8px;\
+height: 8px;\
+border-radius: 50%;\
+display: inline-block;\
+\}\
+\
+/* ===== TAKVIM VIEW ===== */\
+.cal-nav \{\
+display: flex;\
+align-items: center;\
+gap: 16px;\
+margin-bottom: 20px;\
+\}\
+.cal-title \{\
+font-size: 1.3rem;\
+font-weight: 800;\
+flex: 1;\
+\}\
+.cal-grid \{\
+display: grid;\
+grid-template-columns: repeat(7, 1fr);\
+gap: 1px;\
+background: var(\'96border);\
+border: 1px solid var(\'96border);\
+border-radius: 8px;\
+overflow: hidden;\
+\}\
+.cal-day-header \{\
+background: var(\'96surface);\
+padding: 10px;\
+text-align: center;\
+font-size: 0.65rem;\
+font-weight: 700;\
+letter-spacing: 2px;\
+text-transform: uppercase;\
+color: var(\'96muted);\
+font-family: var(\'96font-mono);\
+\}\
+.cal-cell \{\
+background: var(\'96surface);\
+min-height: 100px;\
+padding: 8px;\
+cursor: pointer;\
+transition: background 0.15s;\
+\}\
+.cal-cell:hover \{ background: var(\'96surface2); \}\
+.cal-cell.today-cell \{ background: rgba(0,229,255,0.05); \}\
+.cal-cell.other-month \{ opacity: 0.35; \}\
+.cal-date \{\
+font-family: var(\'96font-mono);\
+font-size: 0.75rem;\
+color: var(\'96muted);\
+margin-bottom: 5px;\
+\}\
+.cal-cell.today-cell .cal-date \{\
+color: var(\'96accent);\
+font-weight: 700;\
+\}\
+.cal-task-dot \{\
+font-size: 0.65rem;\
+padding: 2px 5px;\
+border-radius: 3px;\
+margin-bottom: 2px;\
+white-space: nowrap;\
+overflow: hidden;\
+text-overflow: ellipsis;\
+max-width: 100%;\
+\}\
+.dot-critical \{ background: rgba(255,61,113,0.25); color: var(\'96accent2); \}\
+.dot-high \{ background: rgba(255,179,0,0.2); color: var(\'96warn); \}\
+.dot-medium \{ background: rgba(179,136,255,0.2); color: var(\'96accent3); \}\
+.dot-low \{ background: rgba(0,229,255,0.15); color: var(\'96accent); \}\
+\
+/* ===== LIDERLER VIEW ===== */\
+.leaders-grid \{\
+display: grid;\
+grid-template-columns: repeat(3, 1fr);\
+gap: 16px;\
+\}\
+.leader-card \{\
+background: var(\'96surface);\
+border: 1px solid var(\'96border);\
+border-radius: 8px;\
+padding: 20px;\
+transition: border-color 0.2s;\
+cursor: pointer;\
+\}\
+.leader-card:hover \{ border-color: var(\'96accent); \}\
+.leader-card-header \{\
+display: flex;\
+align-items: center;\
+gap: 12px;\
+margin-bottom: 14px;\
+\}\
+.leader-avatar \{\
+width: 40px;\
+height: 40px;\
+border-radius: 8px;\
+display: flex;\
+align-items: center;\
+justify-content: center;\
+font-weight: 800;\
+font-size: 1rem;\
+flex-shrink: 0;\
+\}\
+.leader-info h3 \{\
+font-size: 0.9rem;\
+font-weight: 700;\
+margin-bottom: 2px;\
+\}\
+.leader-info .role \{\
+font-size: 0.65rem;\
+color: var(\'96muted);\
+font-family: var(\'96font-mono);\
+letter-spacing: 1px;\
+text-transform: uppercase;\
+\}\
+.leader-stats \{\
+display: grid;\
+grid-template-columns: repeat(3, 1fr);\
+gap: 8px;\
+margin-bottom: 14px;\
+\}\
+.lstat \{\
+text-align: center;\
+background: var(\'96surface2);\
+padding: 8px;\
+border-radius: 4px;\
+\}\
+.lstat-val \{\
+font-size: 1.3rem;\
+font-weight: 800;\
+\}\
+.lstat-label \{\
+font-size: 0.58rem;\
+color: var(\'96muted);\
+font-family: var(\'96font-mono);\
+letter-spacing: 1px;\
+text-transform: uppercase;\
+\}\
+.progress-bar \{\
+background: var(\'96surface2);\
+border-radius: 99px;\
+height: 4px;\
+overflow: hidden;\
+\}\
+.progress-fill \{\
+height: 100%;\
+border-radius: 99px;\
+background: var(\'96accent);\
+transition: width 0.4s ease;\
+\}\
+.leader-tasks-list \{\
+margin-top: 12px;\
+\}\
+.leader-task-item \{\
+display: flex;\
+align-items: center;\
+justify-content: space-between;\
+padding: 6px 0;\
+border-bottom: 1px solid var(\'96border);\
+font-size: 0.75rem;\
+\}\
+.leader-task-item:last-child \{ border-bottom: none; \}\
+\
+/* ===== UYARILAR VIEW ===== */\
+.alert-section \{ margin-bottom: 28px; \}\
+.alert-section-title \{\
+font-size: 0.65rem;\
+font-weight: 700;\
+letter-spacing: 3px;\
+text-transform: uppercase;\
+color: var(\'96muted);\
+font-family: var(\'96font-mono);\
+margin-bottom: 12px;\
+display: flex;\
+align-items: center;\
+gap: 8px;\
+\}\
+.alert-count \{\
+background: var(\'96accent2);\
+color: #fff;\
+border-radius: 99px;\
+padding: 1px 7px;\
+font-size: 0.65rem;\
+\}\
+.alert-count.warn \{ background: var(\'96warn); color: #000; \}\
+.alert-count.info \{ background: var(\'96accent3); color: #000; \}\
+.alert-item \{\
+background: var(\'96surface);\
+border: 1px solid var(\'96border);\
+border-radius: 6px;\
+padding: 14px 16px;\
+margin-bottom: 8px;\
+display: flex;\
+align-items: center;\
+gap: 16px;\
+\}\
+.alert-item.critical \{ border-left: 3px solid var(\'96accent2); \}\
+.alert-item.warning \{ border-left: 3px solid var(\'96warn); \}\
+.alert-item.info \{ border-left: 3px solid var(\'96accent3); \}\
+.alert-icon \{ font-size: 1.2rem; flex-shrink: 0; \}\
+.alert-body \{ flex: 1; \}\
+.alert-title \{ font-size: 0.85rem; font-weight: 700; margin-bottom: 3px; \}\
+.alert-desc \{ font-size: 0.75rem; color: var(\'96muted); \}\
+\
+/* MODAL */\
+.modal-overlay \{\
+position: fixed;\
+inset: 0;\
+background: rgba(0,0,0,0.7);\
+z-index: 1000;\
+display: flex;\
+align-items: center;\
+justify-content: center;\
+opacity: 0;\
+pointer-events: none;\
+transition: opacity 0.2s;\
+\}\
+.modal-overlay.open \{\
+opacity: 1;\
+pointer-events: all;\
+\}\
+.modal \{\
+background: var(\'96surface);\
+border: 1px solid var(\'96border);\
+border-radius: 10px;\
+padding: 28px;\
+width: 520px;\
+max-width: 95vw;\
+max-height: 90vh;\
+overflow-y: auto;\
+\}\
+.modal h2 \{\
+font-size: 1.1rem;\
+font-weight: 800;\
+margin-bottom: 20px;\
+color: var(\'96accent);\
+\}\
+.form-group \{\
+margin-bottom: 16px;\
+\}\
+.form-group label \{\
+display: block;\
+font-size: 0.65rem;\
+font-weight: 700;\
+letter-spacing: 2px;\
+text-transform: uppercase;\
+color: var(\'96muted);\
+font-family: var(\'96font-mono);\
+margin-bottom: 6px;\
+\}\
+.form-group input, .form-group select, .form-group textarea \{\
+width: 100%;\
+background: var(\'96bg);\
+border: 1px solid var(\'96border);\
+color: var(\'96text);\
+padding: 10px 12px;\
+border-radius: 4px;\
+font-family: var(\'96font-head);\
+font-size: 0.85rem;\
+\}\
+.form-group textarea \{ resize: vertical; min-height: 80px; \}\
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus \{\
+outline: none;\
+border-color: var(\'96accent);\
+\}\
+.form-row \{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; \}\
+.modal-actions \{\
+display: flex;\
+gap: 10px;\
+justify-content: flex-end;\
+margin-top: 20px;\
+\}\
+\
+/* NOTIFICATION TOAST */\
+.toast-container \{\
+position: fixed;\
+bottom: 24px;\
+right: 24px;\
+z-index: 2000;\
+display: flex;\
+flex-direction: column;\
+gap: 10px;\
+\}\
+.toast \{\
+background: var(\'96surface2);\
+border: 1px solid var(\'96border);\
+border-left: 4px solid var(\'96accent);\
+padding: 14px 18px;\
+border-radius: 6px;\
+min-width: 280px;\
+font-size: 0.82rem;\
+animation: slideIn 0.3s ease;\
+cursor: pointer;\
+\}\
+.toast.danger \{ border-left-color: var(\'96accent2); \}\
+.toast.warn \{ border-left-color: var(\'96warn); \}\
+.toast strong \{ display: block; margin-bottom: 2px; \}\
+@keyframes slideIn \{\
+from \{ transform: translateX(60px); opacity: 0; \}\
+to \{ transform: translateX(0); opacity: 1; \}\
+\}\
+\
+/* NOTIFICATION BELL */\
+.notif-btn \{\
+background: var(\'96surface2);\
+border: 1px solid var(\'96border);\
+color: var(\'96text);\
+padding: 8px 12px;\
+border-radius: 6px;\
+cursor: pointer;\
+font-size: 0.9rem;\
+position: relative;\
+\}\
+.notif-badge \{\
+position: absolute;\
+top: -4px;\
+right: -4px;\
+background: var(\'96accent2);\
+color: #fff;\
+font-size: 0.6rem;\
+font-weight: 700;\
+padding: 1px 5px;\
+border-radius: 99px;\
+font-family: var(\'96font-mono);\
+\}\
+\
+/* EMPTY STATE */\
+.empty-state \{\
+text-align: center;\
+padding: 48px;\
+color: var(\'96muted);\
+\}\
+.empty-state .icon \{ font-size: 2.5rem; margin-bottom: 12px; \}\
+.empty-state p \{ font-size: 0.85rem; \}\
+\
+/* SCROLLBAR */\
+::-webkit-scrollbar \{ width: 5px; height: 5px; \}\
+::-webkit-scrollbar-track \{ background: var(\'96bg); \}\
+::-webkit-scrollbar-thumb \{ background: var(\'96border); border-radius: 3px; \}\
+\
+/* RESPONSIVE */\
+@media (max-width: 900px) \{\
+.stats-bar \{ grid-template-columns: repeat(3, 1fr); \}\
+.leaders-grid \{ grid-template-columns: 1fr 1fr; \}\
+.main \{ padding: 16px; \}\
+.header, .tabs \{ padding-left: 16px; padding-right: 16px; \}\
+\}\
+</style>\
+\
+</head>\
+<body>\
+\
+<div class="header">\
+  <div class="logo">QA<span> Command</span></div>\
+  <div style="display:flex;align-items:center;gap:12px;">\
+    <button class="notif-btn" onclick="showView('alerts')" id="notifBtn">\
+      \uc0\u55357 \u56596 \
+      <span class="notif-badge" id="notifCount">0</span>\
+    </button>\
+    <button class="btn" onclick="openModal()">+ Yeni G\'f6rev</button>\
+    <div class="header-meta">\
+      <strong id="currentTime"></strong>\
+      150 ki\uc0\u351 i \'b7 11 lider\
+    </div>\
+  </div>\
+</div>\
+\
+<div class="tabs">\
+  <button class="tab active" onclick="showView('tasks', this)">\uc0\u55357 \u56523  G\'f6revler</button>\
+  <button class="tab" onclick="showView('calendar', this)">\uc0\u55357 \u56517  Takvim</button>\
+  <button class="tab" onclick="showView('leaders', this)">\uc0\u55357 \u56421  Liderler</button>\
+  <button class="tab" onclick="showView('alerts', this)">\uc0\u9888 \u65039  Uyar\u305 lar</button>\
+</div>\
+\
+<div class="main">\
+\
+  <!-- STATS -->\
+\
+  <div class="stats-bar">\
+    <div class="stat-card">\
+      <div class="stat-label">Toplam G\'f6rev</div>\
+      <div class="stat-val accent" id="statTotal">0</div>\
+    </div>\
+    <div class="stat-card">\
+      <div class="stat-label">A\'e7\uc0\u305 k</div>\
+      <div class="stat-val ok" id="statOpen">0</div>\
+    </div>\
+    <div class="stat-card">\
+      <div class="stat-label">Bug\'fcn Bitiyor</div>\
+      <div class="stat-val warn" id="statToday">0</div>\
+    </div>\
+    <div class="stat-card">\
+      <div class="stat-label">Gecikmi\uc0\u351 </div>\
+      <div class="stat-val danger" id="statOverdue">0</div>\
+    </div>\
+    <div class="stat-card">\
+      <div class="stat-label">Tamamlanan</div>\
+      <div class="stat-val" id="statDone">0</div>\
+    </div>\
+  </div>\
+\
+  <!-- TASKS VIEW -->\
+\
+  <div class="view active" id="view-tasks">\
+    <div class="section-header">\
+      <div class="section-title">T\'fcm G\'f6revler</div>\
+      <div style="display:flex;gap:8px;">\
+        <button class="btn secondary" onclick="exportData()">\uc0\u11015  D\u305 \u351 a Aktar</button>\
+      </div>\
+    </div>\
+    <div class="filters">\
+      <input class="filter-input" placeholder="\uc0\u55357 \u56589  G\'f6rev ara..." id="searchInput" oninput="renderTasks()">\
+      <select class="filter-select" id="filterLeader" onchange="renderTasks()">\
+        <option value="">T\'fcm Liderler</option>\
+      </select>\
+      <select class="filter-select" id="filterStatus" onchange="renderTasks()">\
+        <option value="">T\'fcm Durumlar</option>\
+        <option value="open">A\'e7\uc0\u305 k</option>\
+        <option value="progress">Devam Ediyor</option>\
+        <option value="review">\uc0\u304 ncelemede</option>\
+        <option value="done">Tamamland\uc0\u305 </option>\
+      </select>\
+      <select class="filter-select" id="filterPriority" onchange="renderTasks()">\
+        <option value="">T\'fcm \'d6ncelikler</option>\
+        <option value="critical">Kritik</option>\
+        <option value="high">Y\'fcksek</option>\
+        <option value="medium">Orta</option>\
+        <option value="low">D\'fc\uc0\u351 \'fck</option>\
+      </select>\
+    </div>\
+    <table class="task-table">\
+      <thead>\
+        <tr>\
+          <th onclick="sortBy('title')">G\'f6rev \uc0\u8597 </th>\
+          <th onclick="sortBy('leader')">Lider \uc0\u8597 </th>\
+          <th onclick="sortBy('priority')">\'d6ncelik \uc0\u8597 </th>\
+          <th onclick="sortBy('status')">Durum \uc0\u8597 </th>\
+          <th onclick="sortBy('deadline')">Deadline \uc0\u8597 </th>\
+          <th>\uc0\u304 \u351 lem</th>\
+        </tr>\
+      </thead>\
+      <tbody id="taskTableBody"></tbody>\
+    </table>\
+    <div class="empty-state" id="emptyState" style="display:none;">\
+      <div class="icon">\uc0\u55357 \u56557 </div>\
+      <p>G\'f6rev bulunamad\uc0\u305 .</p>\
+    </div>\
+  </div>\
+\
+  <!-- CALENDAR VIEW -->\
+\
+  <div class="view" id="view-calendar">\
+    <div class="cal-nav">\
+      <button class="btn secondary" onclick="changeMonth(-1)">\uc0\u8592  \'d6nceki</button>\
+      <div class="cal-title" id="calTitle"></div>\
+      <button class="btn secondary" onclick="changeMonth(1)">Sonraki \uc0\u8594 </button>\
+    </div>\
+    <div class="cal-grid" id="calGrid"></div>\
+  </div>\
+\
+  <!-- LEADERS VIEW -->\
+\
+  <div class="view" id="view-leaders">\
+    <div class="section-header">\
+      <div class="section-title">Tak\uc0\u305 m Liderleri</div>\
+    </div>\
+    <div class="leaders-grid" id="leadersGrid"></div>\
+  </div>\
+\
+  <!-- ALERTS VIEW -->\
+\
+  <div class="view" id="view-alerts">\
+    <div class="alert-section">\
+      <div class="alert-section-title">\
+        \uc0\u55357 \u56628  Gecikmi\u351  G\'f6revler\
+        <span class="alert-count" id="overdueCount">0</span>\
+      </div>\
+      <div id="overdueAlerts"></div>\
+    </div>\
+    <div class="alert-section">\
+      <div class="alert-section-title">\
+        \uc0\u55357 \u57313  Bug\'fcn Biten\
+        <span class="alert-count warn" id="todayCount">0</span>\
+      </div>\
+      <div id="todayAlerts"></div>\
+    </div>\
+    <div class="alert-section">\
+      <div class="alert-section-title">\
+        \uc0\u55357 \u57315  3 G\'fcn \u304 \'e7inde Bitiyor\
+        <span class="alert-count info" id="soonCount">0</span>\
+      </div>\
+      <div id="soonAlerts"></div>\
+    </div>\
+  </div>\
+\
+</div>\
+\
+<!-- MODAL -->\
+\
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalIfOutside(event)">\
+  <div class="modal" id="modalBox">\
+    <h2 id="modalTitle">\uc0\u10133  Yeni G\'f6rev Olu\u351 tur</h2>\
+    <div class="form-group">\
+      <label>G\'f6rev Ba\uc0\u351 l\u305 \u287 \u305  *</label>\
+      <input type="text" id="taskTitle" placeholder="G\'f6rev ba\uc0\u351 l\u305 \u287 \u305 n\u305  girin...">\
+    </div>\
+    <div class="form-group">\
+      <label>A\'e7\uc0\u305 klama</label>\
+      <textarea id="taskDesc" placeholder="G\'f6rev a\'e7\uc0\u305 klamas\u305 ..."></textarea>\
+    </div>\
+    <div class="form-row">\
+      <div class="form-group">\
+        <label>Tak\uc0\u305 m Lideri *</label>\
+        <select id="taskLeader"></select>\
+      </div>\
+      <div class="form-group">\
+        <label>\'d6ncelik</label>\
+        <select id="taskPriority">\
+          <option value="low">D\'fc\uc0\u351 \'fck</option>\
+          <option value="medium" selected>Orta</option>\
+          <option value="high">Y\'fcksek</option>\
+          <option value="critical">Kritik</option>\
+        </select>\
+      </div>\
+    </div>\
+    <div class="form-row">\
+      <div class="form-group">\
+        <label>Deadline *</label>\
+        <input type="date" id="taskDeadline">\
+      </div>\
+      <div class="form-group">\
+        <label>Durum</label>\
+        <select id="taskStatus">\
+          <option value="open">A\'e7\uc0\u305 k</option>\
+          <option value="progress">Devam Ediyor</option>\
+          <option value="review">\uc0\u304 ncelemede</option>\
+          <option value="done">Tamamland\uc0\u305 </option>\
+        </select>\
+      </div>\
+    </div>\
+    <div class="modal-actions">\
+      <button class="btn secondary" onclick="closeModal()">\uc0\u304 ptal</button>\
+      <button class="btn" onclick="saveTask()">Kaydet</button>\
+    </div>\
+  </div>\
+</div>\
+\
+<!-- TOAST CONTAINER -->\
+\
+<div class="toast-container" id="toastContainer"></div>\
+\
+<script>\
+// ==================== DATA ====================\
+const LEADERS = [\
+  \{ id: 'l1', name: 'Ahmet Kaya', role: 'Tak\uc0\u305 m Lideri', color: '#00e5ff', bg: 'rgba(0,229,255,0.15)' \},\
+  \{ id: 'l2', name: 'Zeynep Arslan', role: 'Tak\uc0\u305 m Lideri', color: '#ff3d71', bg: 'rgba(255,61,113,0.15)' \},\
+  \{ id: 'l3', name: 'Mehmet Y\uc0\u305 ld\u305 z', role: 'Tak\u305 m Lideri', color: '#00e676', bg: 'rgba(0,230,118,0.15)' \},\
+  \{ id: 'l4', name: 'Selin \'c7elik', role: 'Tak\uc0\u305 m Lideri', color: '#ffb300', bg: 'rgba(255,179,0,0.15)' \},\
+  \{ id: 'l5', name: 'Burak Demir', role: 'Teknik Lider', color: '#b388ff', bg: 'rgba(179,136,255,0.15)' \},\
+  \{ id: 'l6', name: 'Ay\uc0\u351 e \u350 ahin', role: 'Tak\u305 m Lideri', color: '#ff6d00', bg: 'rgba(255,109,0,0.15)' \},\
+  \{ id: 'l7', name: 'Can Ayd\uc0\u305 n', role: 'Tak\u305 m Lideri', color: '#00bcd4', bg: 'rgba(0,188,212,0.15)' \},\
+  \{ id: 'l8', name: 'Elif Ko\'e7', role: 'Tak\uc0\u305 m Lideri', color: '#f06292', bg: 'rgba(240,98,146,0.15)' \},\
+  \{ id: 'l9', name: '\'d6mer Y\uc0\u305 lmaz', role: 'Tak\u305 m Lideri', color: '#aed581', bg: 'rgba(174,213,129,0.15)' \},\
+  \{ id: 'l10', name: 'Fatma \'c7etin', role: 'Teknik Lider', color: '#ffd54f', bg: 'rgba(255,213,79,0.15)' \},\
+  \{ id: 'l11', name: 'Serkan \'d6zt\'fcrk', role: 'Tak\uc0\u305 m Lideri', color: '#4fc3f7', bg: 'rgba(79,195,247,0.15)' \},\
+];\
+\
+let tasks = [];\
+let editingTaskId = null;\
+let sortKey = 'deadline';\
+let sortAsc = true;\
+let currentCalMonth = new Date();\
+\
+// ==================== SAMPLE DATA ====================\
+function initSampleData() \{\
+  const saved = localStorage.getItem('qa_tasks');\
+  if (saved) \{ tasks = JSON.parse(saved); return; \}\
+\
+  const today = new Date();\
+  const d = (offset) => \{\
+    const dd = new Date(today);\
+    dd.setDate(dd.getDate() + offset);\
+    return dd.toISOString().split('T')[0];\
+  \};\
+\
+  tasks = [\
+    \{ id: uid(), title: 'Regresyon Test Plan\uc0\u305  Haz\u305 rlama', desc: 'Q3 release i\'e7in regresyon test plan\u305  olu\u351 turulacak.', leader: 'l1', priority: 'high', status: 'progress', deadline: d(2) \},\
+    \{ id: uid(), title: 'API Test Otomasyonu', desc: 'REST API endpointleri i\'e7in Postman collection g\'fcncellenmesi.', leader: 'l2', priority: 'critical', status: 'open', deadline: d(-2) \},\
+    \{ id: uid(), title: 'Mobil Test Senaryolar\uc0\u305 ', desc: 'iOS ve Android smoke test senaryolar\u305 .', leader: 'l3', priority: 'medium', status: 'review', deadline: d(5) \},\
+    \{ id: uid(), title: 'Performance Test Raporu', desc: 'Y\'fck testi sonu\'e7lar\uc0\u305 n\u305 n raporlanmas\u305 .', leader: 'l4', priority: 'high', status: 'open', deadline: d(0) \},\
+    \{ id: uid(), title: 'CI/CD Pipeline Test Entegrasyonu', desc: 'Jenkins pipeline\\'a test ad\uc0\u305 mlar\u305 n\u305 n eklenmesi.', leader: 'l5', priority: 'critical', status: 'progress', deadline: d(1) \},\
+    \{ id: uid(), title: 'UAT Koordinasyonu', desc: 'M\'fc\uc0\u351 teri kabul testlerinin planlanmas\u305  ve takibi.', leader: 'l6', priority: 'high', status: 'open', deadline: d(3) \},\
+    \{ id: uid(), title: 'Test Veri Y\'f6netimi', desc: 'Test ortam\uc0\u305  i\'e7in master data haz\u305 rl\u305 \u287 \u305 .', leader: 'l7', priority: 'medium', status: 'done', deadline: d(-5) \},\
+    \{ id: uid(), title: 'Security Test Checklist', desc: 'OWASP Top 10 kontrol listesi g\'fcncelleme.', leader: 'l8', priority: 'high', status: 'open', deadline: d(7) \},\
+    \{ id: uid(), title: 'Test Metrikleri Dashboard', desc: 'Haftal\uc0\u305 k test metriklerinin raporlanmas\u305 .', leader: 'l9', priority: 'low', status: 'progress', deadline: d(4) \},\
+    \{ id: uid(), title: 'Framework G\'fcncelleme', desc: 'Selenium \uc0\u8594  Playwright migrasyonu.', leader: 'l10', priority: 'critical', status: 'open', deadline: d(-1) \},\
+    \{ id: uid(), title: 'Test Ortam\uc0\u305  Bak\u305 m\u305 ', desc: 'Staging environment senkronizasyonu.', leader: 'l11', priority: 'medium', status: 'review', deadline: d(6) \},\
+    \{ id: uid(), title: 'Sprint Review Haz\uc0\u305 rl\u305 \u287 \u305 ', desc: 'Demo i\'e7in test sonu\'e7lar\u305  sunum haz\u305 rl\u305 \u287 \u305 .', leader: 'l1', priority: 'high', status: 'open', deadline: d(0) \},\
+    \{ id: uid(), title: 'Accessibility Test', desc: 'WCAG 2.1 uyumluluk testleri.', leader: 'l3', priority: 'medium', status: 'open', deadline: d(10) \},\
+  ];\
+  saveTasks();\
+\}\
+\
+function uid() \{ return Math.random().toString(36).slice(2, 11); \}\
+function saveTasks() \{ localStorage.setItem('qa_tasks', JSON.stringify(tasks)); \}\
+\
+// ==================== HELPERS ====================\
+function getLeader(id) \{ return LEADERS.find(l => l.id === id) || \{ name: 'Bilinmiyor', color: '#666', bg: 'rgba(100,100,100,0.1)' \}; \}\
+\
+function getDeadlineStatus(deadline) \{\
+  const today = new Date(); today.setHours(0,0,0,0);\
+  const dl = new Date(deadline); dl.setHours(0,0,0,0);\
+  const diff = Math.round((dl - today) / 86400000);\
+  if (diff < 0) return 'overdue';\
+  if (diff === 0) return 'today';\
+  if (diff <= 3) return 'soon';\
+  return 'ok';\
+\}\
+\
+function formatDeadline(deadline) \{\
+  const d = new Date(deadline);\
+  return d.toLocaleDateString('tr-TR', \{ day: '2-digit', month: 'short', year: 'numeric' \});\
+\}\
+\
+function deadlineDiff(deadline) \{\
+  const today = new Date(); today.setHours(0,0,0,0);\
+  const dl = new Date(deadline); dl.setHours(0,0,0,0);\
+  const diff = Math.round((dl - today) / 86400000);\
+  if (diff < 0) return \uc0\u8288 \u8239 $\{Math.abs(diff)\} g\'fcn gecikti\u8239 \u8288 ;\
+  if (diff === 0) return 'Bug\'fcn!';\
+  return \uc0\u8288 \u8239 $\{diff\} g\'fcn kald\u305 \u8239 \u8288 ;\
+\}\
+\
+// ==================== STATS ====================\
+function updateStats() \{\
+  const today = new Date(); today.setHours(0,0,0,0);\
+  let total = tasks.length, open = 0, todayCount = 0, overdue = 0, done = 0;\
+  tasks.forEach(t => \{\
+    if (t.status === 'done') \{ done++; return; \}\
+    const dl = new Date(t.deadline); dl.setHours(0,0,0,0);\
+    const diff = Math.round((dl - today) / 86400000);\
+    if (diff < 0) overdue++;\
+    else if (diff === 0) todayCount++;\
+    if (t.status !== 'done') open++;\
+  \});\
+  document.getElementById('statTotal').textContent = total;\
+  document.getElementById('statOpen').textContent = open;\
+  document.getElementById('statToday').textContent = todayCount;\
+  document.getElementById('statOverdue').textContent = overdue;\
+  document.getElementById('statDone').textContent = done;\
+\
+  const notifCount = overdue + todayCount;\
+  document.getElementById('notifCount').textContent = notifCount;\
+  document.getElementById('notifCount').style.display = notifCount ? 'block' : 'none';\
+\}\
+\
+// ==================== TASKS VIEW ====================\
+function renderTasks() \{\
+  const search = document.getElementById('searchInput').value.toLowerCase();\
+  const filterLeader = document.getElementById('filterLeader').value;\
+  const filterStatus = document.getElementById('filterStatus').value;\
+  const filterPriority = document.getElementById('filterPriority').value;\
+\
+  let filtered = tasks.filter(t => \{\
+    if (search && !t.title.toLowerCase().includes(search) && !t.desc.toLowerCase().includes(search)) return false;\
+    if (filterLeader && t.leader !== filterLeader) return false;\
+    if (filterStatus && t.status !== filterStatus) return false;\
+    if (filterPriority && t.priority !== filterPriority) return false;\
+    return true;\
+  \});\
+\
+  // Sort\
+  const pOrder = \{ critical: 0, high: 1, medium: 2, low: 3 \};\
+  const sOrder = \{ open: 0, progress: 1, review: 2, done: 3 \};\
+  filtered.sort((a, b) => \{\
+    let va, vb;\
+    if (sortKey === 'deadline') \{ va = a.deadline; vb = b.deadline; \}\
+    else if (sortKey === 'priority') \{ va = pOrder[a.priority]; vb = pOrder[b.priority]; \}\
+    else if (sortKey === 'status') \{ va = sOrder[a.status]; vb = sOrder[b.status]; \}\
+    else if (sortKey === 'leader') \{ va = getLeader(a.leader).name; vb = getLeader(b.leader).name; \}\
+    else \{ va = a.title; vb = b.title; \}\
+    if (va < vb) return sortAsc ? -1 : 1;\
+    if (va > vb) return sortAsc ? 1 : -1;\
+    return 0;\
+  \});\
+\
+  const tbody = document.getElementById('taskTableBody');\
+  const empty = document.getElementById('emptyState');\
+\
+  if (!filtered.length) \{ tbody.innerHTML = ''; empty.style.display = 'block'; return; \}\
+  empty.style.display = 'none';\
+\
+  const priorityMap = \{ critical: ['Kritik', 'p-critical'], high: ['Y\'fcksek', 'p-high'], medium: ['Orta', 'p-medium'], low: ['D\'fc\uc0\u351 \'fck', 'p-low'] \};\
+  const statusMap = \{ open: ['A\'e7\uc0\u305 k', 's-open'], progress: ['Devam Ediyor', 's-progress'], review: ['\u304 ncelemede', 's-review'], done: ['Tamamland\u305 ', 's-done'] \};\
+\
+  tbody.innerHTML = filtered.map(t => \{\
+    const leader = getLeader(t.leader);\
+    const dl = getDeadlineStatus(t.deadline);\
+    const rowClass = t.status !== 'done' ? (dl === 'overdue' ? 'overdue' : dl === 'today' ? 'due-today' : dl === 'soon' ? 'due-soon' : '') : '';\
+    const [pLabel, pClass] = priorityMap[t.priority] || ['\'97', ''];\
+    let [sLabel, sClass] = statusMap[t.status] || ['\'97', ''];\
+    if (t.status !== 'done' && dl === 'overdue') \{ sLabel = 'Gecikmi\uc0\u351 '; sClass = 's-overdue'; \}\
+    const dlClass = dl === 'overdue' ? 'overdue' : dl === 'today' ? 'today' : dl === 'soon' ? 'soon' : 'ok';\
+    const initials = leader.name.split(' ').map(n => n[0]).join('');\
+\
+    return `<tr class="$\{rowClass\}">\
+      <td style="max-width:220px;">\
+        <div style="font-weight:600;margin-bottom:2px;">$\{t.title\}</div>\
+        $\{t.desc ? \uc0\u8288 \u8239 <div style="font-size:0.7rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;">$\{t.desc\}</div>\u8239 \u8288  : ''\}\
+      </td>\
+      <td>\
+        <div class="leader-tag">\
+          <span class="leader-dot" style="background:$\{leader.color\}"></span>\
+          <span style="font-size:0.78rem;">$\{leader.name\}</span>\
+        </div>\
+      </td>\
+      <td><span class="priority-badge $\{pClass\}">$\{pLabel\}</span></td>\
+      <td><span class="status-badge $\{sClass\}">$\{sLabel\}</span></td>\
+      <td>\
+        <div class="deadline-text $\{dlClass\}">$\{formatDeadline(t.deadline)\}</div>\
+        <div class="deadline-text $\{dlClass\}" style="font-size:0.62rem;">$\{deadlineDiff(t.deadline)\}</div>\
+      </td>\
+      <td>\
+        <div class="action-btns">\
+          <button class="icon-btn" onclick="editTask('$\{t.id\}')" title="D\'fczenle">\uc0\u9999 \u65039 </button>\
+          <button class="icon-btn" onclick="toggleDone('$\{t.id\}')" title="$\{t.status === 'done' ? 'Yeniden A\'e7' : 'Tamamland\uc0\u305  \u304 \u351 aretle'\}">$\{t.status === 'done' ? '\u8617 ' : '\u10003 '\}</button>\
+          <button class="icon-btn" onclick="deleteTask('$\{t.id\}')" title="Sil">\uc0\u55357 \u56785 </button>\
+        </div>\
+      </td>\
+    </tr>`;\
+  \}).join('');\
+\}\
+\
+function sortBy(key) \{\
+  if (sortKey === key) sortAsc = !sortAsc;\
+  else \{ sortKey = key; sortAsc = true; \}\
+  renderTasks();\
+\}\
+\
+// ==================== CALENDAR ====================\
+function renderCalendar() \{\
+  const year = currentCalMonth.getFullYear();\
+  const month = currentCalMonth.getMonth();\
+  document.getElementById('calTitle').textContent =\
+    new Date(year, month, 1).toLocaleDateString('tr-TR', \{ month: 'long', year: 'numeric' \}).toUpperCase();\
+\
+  const days = ['PAZ', 'PZT', 'SAL', '\'c7AR', 'PER', 'CUM', 'CMT'];\
+  const today = new Date(); today.setHours(0,0,0,0);\
+\
+  const firstDay = new Date(year, month, 1).getDay();\
+  const daysInMonth = new Date(year, month + 1, 0).getDate();\
+  const daysInPrev = new Date(year, month, 0).getDate();\
+\
+  const tasksByDate = \{\};\
+  tasks.forEach(t => \{\
+    if (!tasksByDate[t.deadline]) tasksByDate[t.deadline] = [];\
+    tasksByDate[t.deadline].push(t);\
+  \});\
+\
+  const pDotMap = \{ critical: 'dot-critical', high: 'dot-high', medium: 'dot-medium', low: 'dot-low' \};\
+\
+  let html = days.map(d => \uc0\u8288 \u8239 <div class="cal-day-header">$\{d\}</div>\u8239 \u8288 ).join('');\
+\
+  // prev month padding\
+  for (let i = firstDay - 1; i >= 0; i--) \{\
+    html += \uc0\u8288 \u8239 <div class="cal-cell other-month"><div class="cal-date">$\{daysInPrev - i\}</div></div>\u8239 \u8288 ;\
+  \}\
+\
+  for (let d = 1; d <= daysInMonth; d++) \{\
+    const dateStr = \uc0\u8288 \u8239 $\{year\}-$\{String(month + 1).padStart(2, '0')\}-$\{String(d).padStart(2, '0')\}\u8239 \u8288 ;\
+    const cellDate = new Date(year, month, d);\
+    const isToday = cellDate.getTime() === today.getTime();\
+    const dayTasks = tasksByDate[dateStr] || [];\
+\
+    const dots = dayTasks.slice(0, 4).map(t =>\
+      \uc0\u8288 \u8239 <div class="cal-task-dot $\{pDotMap[t.priority] || ''\}">$\{t.title\}</div>\u8239 \u8288 \
+    ).join('');\
+    const more = dayTasks.length > 4 ? \uc0\u8288 \u8239 <div style="font-size:0.6rem;color:var(--muted);font-family:var(--font-mono);">+$\{dayTasks.length - 4\} daha</div>\u8239 \u8288  : '';\
+\
+    html += `<div class="cal-cell $\{isToday ? 'today-cell' : ''\}">\
+      <div class="cal-date">$\{d\}</div>\
+      $\{dots\}$\{more\}\
+    </div>`;\
+  \}\
+\
+  // fill remaining\
+  const total = firstDay + daysInMonth;\
+  const remaining = total % 7 === 0 ? 0 : 7 - (total % 7);\
+  for (let i = 1; i <= remaining; i++) \{\
+    html += \uc0\u8288 \u8239 <div class="cal-cell other-month"><div class="cal-date">$\{i\}</div></div>\u8239 \u8288 ;\
+  \}\
+\
+  document.getElementById('calGrid').innerHTML = html;\
+\}\
+\
+function changeMonth(dir) \{\
+  currentCalMonth.setMonth(currentCalMonth.getMonth() + dir);\
+  renderCalendar();\
+\}\
+\
+// ==================== LEADERS ====================\
+function renderLeaders() \{\
+  const pOrder = \{ critical: 0, high: 1, medium: 2, low: 3 \};\
+  const grid = document.getElementById('leadersGrid');\
+  grid.innerHTML = LEADERS.map(l => \{\
+    const lTasks = tasks.filter(t => t.leader === l.id);\
+    const done = lTasks.filter(t => t.status === 'done').length;\
+    const open = lTasks.filter(t => t.status !== 'done').length;\
+    const overdue = lTasks.filter(t => t.status !== 'done' && getDeadlineStatus(t.deadline) === 'overdue').length;\
+    const pct = lTasks.length ? Math.round((done / lTasks.length) * 100) : 0;\
+    const initials = l.name.split(' ').map(n => n[0]).join('');\
+    const urgentTasks = lTasks.filter(t => t.status !== 'done').sort((a, b) => \{\
+      const ds = \{ overdue: 0, today: 1, soon: 2, ok: 3 \};\
+      const da = ds[getDeadlineStatus(a.deadline)] * 10 + pOrder[a.priority];\
+      const db = ds[getDeadlineStatus(b.deadline)] * 10 + pOrder[b.priority];\
+      return da - db;\
+    \}).slice(0, 3);\
+\
+    const pDot = \{ critical: '#ff3d71', high: '#ffb300', medium: '#b388ff', low: '#00e5ff' \};\
+\
+    return `<div class="leader-card">\
+      <div class="leader-card-header">\
+        <div class="leader-avatar" style="background:$\{l.bg\};color:$\{l.color\}">$\{initials\}</div>\
+        <div class="leader-info">\
+          <h3>$\{l.name\}</h3>\
+          <div class="role">$\{l.role\}</div>\
+        </div>\
+      </div>\
+      <div class="leader-stats">\
+        <div class="lstat">\
+          <div class="lstat-val" style="color:var(--accent)">$\{lTasks.length\}</div>\
+          <div class="lstat-label">Toplam</div>\
+        </div>\
+        <div class="lstat">\
+          <div class="lstat-val" style="color:var(--ok)">$\{done\}</div>\
+          <div class="lstat-label">Bitti</div>\
+        </div>\
+        <div class="lstat">\
+          <div class="lstat-val" style="color:$\{overdue > 0 ? 'var(--accent2)' : 'var(--muted)'\}">$\{overdue\}</div>\
+          <div class="lstat-label">Gecikmi\uc0\u351 </div>\
+        </div>\
+      </div>\
+      <div style="margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;">\
+        <span style="font-size:0.65rem;color:var(--muted);font-family:var(--font-mono);">TAMAMLANMA</span>\
+        <span style="font-size:0.65rem;font-family:var(--font-mono);color:$\{l.color\}">$\{pct\}%</span>\
+      </div>\
+      <div class="progress-bar">\
+        <div class="progress-fill" style="width:$\{pct\}%;background:$\{l.color\}"></div>\
+      </div>\
+      $\{urgentTasks.length ? `\
+      <div class="leader-tasks-list">\
+        $\{urgentTasks.map(t => \{\
+          const dl = getDeadlineStatus(t.deadline);\
+          const dlColor = dl === 'overdue' ? 'var(--accent2)' : dl === 'today' ? 'var(--warn)' : dl === 'soon' ? 'var(--accent3)' : 'var(--muted)';\
+          return `<div class="leader-task-item">\
+            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">$\{t.title\}</span>\
+            <span style="font-size:0.65rem;color:$\{dlColor\};font-family:var(--font-mono);flex-shrink:0;margin-left:8px;">$\{deadlineDiff(t.deadline)\}</span>\
+          </div>`;\
+        \}).join('')\}\
+      </div>` : '<div style="margin-top:12px;font-size:0.72rem;color:var(--muted);text-align:center;">Aktif g\'f6rev yok \uc0\u55356 \u57225 </div>'\}\
+    </div>`;\
+  \}).join('');\
+\}\
+\
+// ==================== ALERTS ====================\
+function renderAlerts() \{\
+  const overdueTasks = tasks.filter(t => t.status !== 'done' && getDeadlineStatus(t.deadline) === 'overdue')\
+    .sort((a, b) => a.deadline.localeCompare(b.deadline));\
+  const todayTasks = tasks.filter(t => t.status !== 'done' && getDeadlineStatus(t.deadline) === 'today');\
+  const soonTasks = tasks.filter(t => t.status !== 'done' && getDeadlineStatus(t.deadline) === 'soon');\
+\
+  document.getElementById('overdueCount').textContent = overdueTasks.length;\
+  document.getElementById('todayCount').textContent = todayTasks.length;\
+  document.getElementById('soonCount').textContent = soonTasks.length;\
+\
+  const renderAlertList = (arr, type) => arr.map(t => \{\
+    const leader = getLeader(t.leader);\
+    return `<div class="alert-item $\{type\}">\
+      <div class="alert-icon">$\{type === 'critical' ? '\uc0\u55357 \u56628 ' : type === 'warning' ? '\u55357 \u57313 ' : '\u55357 \u57315 '\}</div>\
+      <div class="alert-body">\
+        <div class="alert-title">$\{t.title\}</div>\
+        <div class="alert-desc">\
+          <span style="color:$\{leader.color\}">\uc0\u9679  $\{leader.name\}</span> &nbsp;\'b7&nbsp;\
+          Deadline: $\{formatDeadline(t.deadline)\} &nbsp;\'b7&nbsp;\
+          $\{deadlineDiff(t.deadline)\}\
+        </div>\
+      </div>\
+      <div>\
+        <button class="btn secondary" style="font-size:0.7rem;padding:6px 12px;" onclick="editTask('$\{t.id\}')">G\'fcncelle</button>\
+      </div>\
+    </div>`;\
+  \}).join('') || '<div style="color:var(--muted);font-size:0.8rem;padding:12px 0;">Yok \uc0\u55356 \u57225 </div>';\
+\
+  document.getElementById('overdueAlerts').innerHTML = renderAlertList(overdueTasks, 'critical');\
+  document.getElementById('todayAlerts').innerHTML = renderAlertList(todayTasks, 'warning');\
+  document.getElementById('soonAlerts').innerHTML = renderAlertList(soonTasks, 'info');\
+\}\
+\
+// ==================== MODAL ====================\
+function openModal(id = null) \{\
+  editingTaskId = id;\
+  const modal = document.getElementById('modalBox');\
+  const overlay = document.getElementById('modalOverlay');\
+\
+  // Populate leader select\
+  const leaderSel = document.getElementById('taskLeader');\
+  leaderSel.innerHTML = LEADERS.map(l => \uc0\u8288 \u8239 <option value="$\{l.id\}">$\{l.name\} ($\{l.role\})</option>\u8239 \u8288 ).join('');\
+\
+  if (id) \{\
+    const t = tasks.find(x => x.id === id);\
+    document.getElementById('modalTitle').textContent = '\uc0\u9999 \u65039  G\'f6revi D\'fczenle';\
+    document.getElementById('taskTitle').value = t.title;\
+    document.getElementById('taskDesc').value = t.desc || '';\
+    document.getElementById('taskLeader').value = t.leader;\
+    document.getElementById('taskPriority').value = t.priority;\
+    document.getElementById('taskDeadline').value = t.deadline;\
+    document.getElementById('taskStatus').value = t.status;\
+  \} else \{\
+    document.getElementById('modalTitle').textContent = '\uc0\u10133  Yeni G\'f6rev';\
+    document.getElementById('taskTitle').value = '';\
+    document.getElementById('taskDesc').value = '';\
+    document.getElementById('taskDeadline').value = '';\
+    document.getElementById('taskPriority').value = 'medium';\
+    document.getElementById('taskStatus').value = 'open';\
+  \}\
+\
+  overlay.classList.add('open');\
+\}\
+\
+function closeModal() \{\
+  document.getElementById('modalOverlay').classList.remove('open');\
+  editingTaskId = null;\
+\}\
+\
+function closeModalIfOutside(e) \{\
+  if (e.target === document.getElementById('modalOverlay')) closeModal();\
+\}\
+\
+function saveTask() \{\
+  const title = document.getElementById('taskTitle').value.trim();\
+  const leader = document.getElementById('taskLeader').value;\
+  const deadline = document.getElementById('taskDeadline').value;\
+  if (!title || !leader || !deadline) \{\
+    showToast('Ba\uc0\u351 l\u305 k, Lider ve Deadline zorunludur!', 'danger');\
+    return;\
+  \}\
+  const taskData = \{\
+    title,\
+    desc: document.getElementById('taskDesc').value.trim(),\
+    leader,\
+    priority: document.getElementById('taskPriority').value,\
+    deadline,\
+    status: document.getElementById('taskStatus').value,\
+  \};\
+  if (editingTaskId) \{\
+    const idx = tasks.findIndex(t => t.id === editingTaskId);\
+    tasks[idx] = \{ ...tasks[idx], ...taskData \};\
+    showToast('G\'f6rev g\'fcncellendi.', 'ok');\
+  \} else \{\
+    tasks.push(\{ id: uid(), ...taskData \});\
+    showToast('Yeni g\'f6rev olu\uc0\u351 turuldu!');\
+  \}\
+  saveTasks();\
+  closeModal();\
+  refresh();\
+\}\
+\
+function editTask(id) \{ openModal(id); \}\
+\
+function deleteTask(id) \{\
+  if (!confirm('Bu g\'f6revi silmek istedi\uc0\u287 inize emin misiniz?')) return;\
+  tasks = tasks.filter(t => t.id !== id);\
+  saveTasks();\
+  showToast('G\'f6rev silindi.', 'warn');\
+  refresh();\
+\}\
+\
+function toggleDone(id) \{\
+  const t = tasks.find(x => x.id === id);\
+  t.status = t.status === 'done' ? 'open' : 'done';\
+  saveTasks();\
+  refresh();\
+\}\
+\
+// ==================== VIEWS ====================\
+let activeTab = null;\
+function showView(view, tabEl) \{\
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));\
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));\
+  document.getElementById('view-' + view).classList.add('active');\
+  if (tabEl) tabEl.classList.add('active');\
+\
+  if (view === 'calendar') renderCalendar();\
+  if (view === 'leaders') renderLeaders();\
+  if (view === 'alerts') renderAlerts();\
+\}\
+\
+function refresh() \{\
+  updateStats();\
+  renderTasks();\
+  const active = document.querySelector('.view.active');\
+  if (active) \{\
+    const id = active.id;\
+    if (id === 'view-calendar') renderCalendar();\
+    if (id === 'view-leaders') renderLeaders();\
+    if (id === 'view-alerts') renderAlerts();\
+  \}\
+\}\
+\
+// ==================== TOAST ====================\
+function showToast(msg, type = '') \{\
+  const container = document.getElementById('toastContainer');\
+  const el = document.createElement('div');\
+  el.className = 'toast ' + type;\
+  el.innerHTML = msg;\
+  el.onclick = () => el.remove();\
+  container.appendChild(el);\
+  setTimeout(() => el.remove(), 4000);\
+\}\
+\
+// ==================== DEADLINE CHECK ====================\
+function checkDeadlines() \{\
+  const overdue = tasks.filter(t => t.status !== 'done' && getDeadlineStatus(t.deadline) === 'overdue');\
+  const today = tasks.filter(t => t.status !== 'done' && getDeadlineStatus(t.deadline) === 'today');\
+  if (overdue.length) showToast(\uc0\u8288 \u8239 \u9888 \u65039  <strong>$\{overdue.length\} gecikmi\u351  g\'f6rev</strong> var!\u8239 \u8288 , 'danger');\
+  if (today.length) showToast(\uc0\u8288 \u8239 \u9200  <strong>$\{today.length\} g\'f6rev bug\'fcn bitiyor!</strong>\u8239 \u8288 , 'warn');\
+\}\
+\
+// ==================== EXPORT ====================\
+function exportData() \{\
+  const header = ['G\'f6rev', 'Lider', '\'d6ncelik', 'Durum', 'Deadline'];\
+  const rows = tasks.map(t => [\
+    \uc0\u8288 \u8239 "$\{t.title\}"\u8239 \u8288 ,\
+    \uc0\u8288 \u8239 "$\{getLeader(t.leader).name\}"\u8239 \u8288 ,\
+    t.priority, t.status, t.deadline\
+  ]);\
+  const csv = [header, ...rows].map(r => r.join(',')).join('\\n');\
+  const blob = new Blob(['\\uFEFF' + csv], \{ type: 'text/csv;charset=utf-8;' \});\
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);\
+  a.download = \uc0\u8288 \u8239 qa_gorevler_$\{new Date().toISOString().split('T')[0]\}.csv\u8239 \u8288 ;\
+  a.click();\
+\}\
+\
+// ==================== CLOCK ====================\
+function updateClock() \{\
+  document.getElementById('currentTime').textContent =\
+    new Date().toLocaleTimeString('tr-TR', \{ hour: '2-digit', minute: '2-digit' \});\
+\}\
+\
+// ==================== LEADER FILTER ====================\
+function populateLeaderFilter() \{\
+  const sel = document.getElementById('filterLeader');\
+  LEADERS.forEach(l => \{\
+    const opt = document.createElement('option');\
+    opt.value = l.id; opt.textContent = l.name;\
+    sel.appendChild(opt);\
+  \});\
+\}\
+\
+// ==================== INIT ====================\
+initSampleData();\
+populateLeaderFilter();\
+updateStats();\
+renderTasks();\
+updateClock();\
+setInterval(updateClock, 30000);\
+checkDeadlines();\
+</script>\
+\
+</body>\
+</html>}
